@@ -37,7 +37,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{url}}{{employee_create_path}}",
+					"raw": "{{url}}{{api_version}}{{employee_create_path}}",
 					"host": [
 						"{{url}}"
 					],
@@ -59,6 +59,7 @@
 							"    pm.response.to.have.status(200);",
 							"});",
 							"",
+							"var json = pm.response.json();",
 							"pm.test(\"Check data is not null\", function () {",
 							"    pm.expect(json.data).not.null",
 							"});"
@@ -71,7 +72,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{url}}{{employee_get_all_path}}",
+					"raw": "{{url}}{{api_version}}{{employee_get_all_path}}",
 					"host": [
 						"{{url}}"
 					],

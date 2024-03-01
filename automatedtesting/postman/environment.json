@@ -36,6 +36,12 @@
 			"value": "employees",
 			"type": "default",
 			"enabled": true
+		},
+		{
+			"key": "api_version",
+			"value": "api/v1",
+			"type": "default",
+			"enabled": true
 		}
 	]
 }
