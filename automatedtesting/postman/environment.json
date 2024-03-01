@@ -21,13 +21,19 @@
 		},
 		{
 			"key": "url",
-			"value": "http://dummy.restapiexample.com/",
+			"value": "http://dummy.restapiexample.com",
 			"type": "default",
 			"enabled": true
 		},
 		{
 			"key": "employee_create_path",
 			"value": "/create",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "employee_get_all_path",
+			"value": "/employees",
 			"type": "default",
 			"enabled": true
 		}

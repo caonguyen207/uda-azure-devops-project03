@@ -37,7 +37,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{url}}/{{create_path}}",
+					"raw": "{{url}}{{create_path}}",
 					"host": [
 						"{{url}}"
 					],
@@ -71,12 +71,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{url}}{{employee_create_path}}",
+					"raw": "{{url}}{{employee_get_all_path}}",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
-						"{{employee_create_path}}"
+						"{{employee_get_all_path}}"
 					]
 				}
 			},
