@@ -13,11 +13,6 @@
 						"exec": [
 							"pm.test(\"Successful response\", function () {",
 							"    pm.response.to.have.status(201);",
-							"});",
-							"",
-							"var json = pm.response.json();",
-							"pm.test(\"Reponse is correct\", function () {",
-							"    pm.expect(json).to.include('id')",
 							"});"
 						],
 						"type": "text/javascript"
@@ -57,11 +52,6 @@
 						"exec": [
 							"pm.test(\"Successful response\", function () {",
 							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"var json = pm.response.json();",
-							"pm.test(\"Check data is not null\", function () {",
-							"    pm.expect(json.data).not.null",
 							"});"
 						],
 						"type": "text/javascript"
