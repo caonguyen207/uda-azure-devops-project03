@@ -1,0 +1,35 @@
+{
+	"name": "Environment for Postman Validation Test",
+	"values": [
+		{
+			"key": "user_id",
+			"value": "1",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "first_name",
+			"value": "Nguyen",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "last_name",
+			"value": "Le Cao",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "url",
+			"value": "https://nguyen-lecao.com.vn",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "employee_default_path",
+			"value": "employees",
+			"type": "default",
+			"enabled": true
+		}
+	]
+}

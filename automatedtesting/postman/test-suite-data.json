@@ -1,0 +1,86 @@
+{
+	"info": {
+		"name": "Environment for Postman Validation Test Suite",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create new employee",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful response\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"var json = pm.response.json();",
+							"pm.test(\"Reponse is correct\", function () {",
+							"    pm.expect(json.user_id).to.eql(pm.environment.get(\"user_id\"));",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user_id\": \"{{user_id}}\",\n    \"first_name\": \"{{first_name}}\",\n    \"last_name\": \"{{last_name}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/{{employee_default_path}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"{{employee_default_path}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all employees",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful response\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Check data is not null\", function () {",
+							"    pm.expect(json.data).not.null",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/{{employee_default_path}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"{{employee_default_path}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
