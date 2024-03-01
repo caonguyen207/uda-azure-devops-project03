@@ -5,14 +5,18 @@
 	},
 	"item": [
 		{
-			"name": "Create A record",
+			"name": "Get all employees",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
 							"pm.test(\"Successful response\", function () {",
-							"    pm.response.to.have.status(201);",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Return not empty result\", function () {",
+							"    var json = pm.response.json()",
+							"    pm.expect(json.data.employee_name).eq('Tiger Nixon');",
 							"});"
 						],
 						"type": "text/javascript"
@@ -20,24 +24,15 @@
 				}
 			],
 			"request": {
-				"method": "POST",
+				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"name\": \"{{name}}\",\n    \"salary\": \"{{salary}}\",\n    \"age\": \"{{age}}\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
-					"raw": "{{url}}{{api_version}}{{employee_create_path}}",
+					"raw": "{{url}}{{api_version}}{{employee_get_path}}{{id}}",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
-						"{{employee_create_path}}"
+						"{{employee_get_path}}"
 					]
 				}
 			},
@@ -52,6 +47,10 @@
 						"exec": [
 							"pm.test(\"Successful response\", function () {",
 							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Return not empty result\", function () {",
+							"    var json = pm.response.json()",
+							"    pm.expect(json.data).length.greaterThan(0);",
 							"});"
 						],
 						"type": "text/javascript"

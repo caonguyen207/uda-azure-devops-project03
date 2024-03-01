@@ -2,20 +2,8 @@
 	"name": "Environment for Postman Validation Test",
 	"values": [
 		{
-			"key": "age",
-			"value": "33",
-			"type": "default",
-			"enabled": true
-		},
-		{
-			"key": "salary",
-			"value": "$50000",
-			"type": "default",
-			"enabled": true
-		},
-		{
-			"key": "name",
-			"value": "Le Cao Nguyen",
+			"key": "id",
+			"value": "1",
 			"type": "default",
 			"enabled": true
 		},
@@ -26,8 +14,8 @@
 			"enabled": true
 		},
 		{
-			"key": "employee_create_path",
-			"value": "create",
+			"key": "employee_get_path",
+			"value": "employee",
 			"type": "default",
 			"enabled": true
 		},
