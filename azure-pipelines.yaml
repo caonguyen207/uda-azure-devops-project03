@@ -31,10 +31,10 @@ stages:
     - task: TerraformInstaller@0
       displayName: 'Terrafom installation'
       inputs:
-        terraformVersion: '1.7.1'
+        terraformVersion: '1.7.4'
     
     # Run Terraform Init on the pipeline agent 
-    - task: TerraformCLI@1
+    - task: TerraformCLI@0
       displayName: 'Terrafom init'
       inputs:
         provider: 'azurerm'
@@ -53,17 +53,19 @@ stages:
         command: 'validate'
         environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
 
-    - task: TerraformCLI@1
+    - task: TerraformCLI@0
       displayName: Terraform plan
       inputs:
         provider: 'azurerm'
         command: 'plan'
         environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
         publishPlanResults: 'my-plan'
+        commandOptions: '-out=$(System.DefaultWorkingDirectory)/terraform.tfplan -detailed-exitcode'
 
     # Run Terraform Apply
     - task: TerraformCLI@1
       displayName: Terraform apply
+      condition: and(succeeded(), eq(variables['TERRAFORM_PLAN_HAS_CHANGES'], 'true'))
       inputs:
         provider: 'azurerm'
         command: 'apply'
