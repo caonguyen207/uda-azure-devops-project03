@@ -84,10 +84,9 @@ stages:
       displayName: Run Data Validation Tests
       continueOnError: true
       inputs:
+        workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
         script: |
           tree $(System.DefaultWorkingDirectory)
-          newman run test-suite-data.json -e environment.json --reporters cli,junit --reporter-junit-export test-report.xml
-        workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
     # Postman Regression Test Suite    
     - task: CmdLine@2
       displayName: Run Regression Tests
