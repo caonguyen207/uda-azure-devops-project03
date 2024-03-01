@@ -85,8 +85,7 @@ stages:
       continueOnError: true
       inputs:
         workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
-        script: |
-          tree $(System.DefaultWorkingDirectory)
+        script: 'ls -la $(System.DefaultWorkingDirectory)'
     # Postman Regression Test Suite    
     - task: CmdLine@2
       displayName: Run Regression Tests
