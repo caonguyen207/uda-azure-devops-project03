@@ -12,7 +12,7 @@
 					"script": {
 						"exec": [
 							"pm.test(\"Successful response\", function () {",
-							"    pm.response.to.have.status(200);",
+							"    pm.response.to.have.status(200)",
 							"});"
 						],
 						"type": "text/javascript"
@@ -42,7 +42,7 @@
 					"script": {
 						"exec": [
 							"pm.test(\"Successful response\", function () {",
-							"    pm.response.to.have.status(200);",
+							"    pm.response.to.have.status(200)",
 							"});"
 						],
 						"type": "text/javascript"
