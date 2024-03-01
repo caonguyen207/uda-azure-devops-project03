@@ -37,12 +37,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{url}}{{create_path}}",
+					"raw": "{{url}}{{employee_create_path}}",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
-						"{{create_path}}"
+						"{{employee_create_path}}"
 					]
 				}
 			},
