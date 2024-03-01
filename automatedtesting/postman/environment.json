@@ -27,13 +27,13 @@
 		},
 		{
 			"key": "employee_create_path",
-			"value": "/create",
+			"value": "create",
 			"type": "default",
 			"enabled": true
 		},
 		{
 			"key": "employee_get_all_path",
-			"value": "/employees",
+			"value": "employees",
 			"type": "default",
 			"enabled": true
 		}
