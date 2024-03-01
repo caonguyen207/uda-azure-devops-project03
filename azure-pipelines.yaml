@@ -52,6 +52,7 @@ stages:
         provider: 'azurerm'
         command: 'validate'
         environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
 
     - task: TerraformCLI@0
       displayName: Terraform plan
@@ -61,6 +62,7 @@ stages:
         environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
         publishPlanResults: 'my-plan'
         commandOptions: '-out=$(System.DefaultWorkingDirectory)/terraform.tfplan -detailed-exitcode'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
 
     # Run Terraform Apply
     - task: TerraformCLI@1
