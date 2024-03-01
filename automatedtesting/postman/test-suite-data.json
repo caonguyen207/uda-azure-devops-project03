@@ -5,7 +5,7 @@
 	},
 	"item": [
 		{
-			"name": "Create new employee",
+			"name": "Create A record",
 			"event": [
 				{
 					"listen": "test",
@@ -17,7 +17,7 @@
 							"",
 							"var json = pm.response.json();",
 							"pm.test(\"Reponse is correct\", function () {",
-							"    pm.expect(json.user_id).to.eql(pm.environment.get(\"user_id\"));",
+							"    pm.expect(json).to.include('id')",
 							"});"
 						],
 						"type": "text/javascript"
@@ -29,7 +29,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"user_id\": \"{{user_id}}\",\n    \"first_name\": \"{{first_name}}\",\n    \"last_name\": \"{{last_name}}\"\n}",
+					"raw": "{\n    \"name\": \"{{name}}\",\n    \"salary\": \"{{salary}}\",\n    \"age\": \"{{age}}\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -37,12 +37,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{url}}/{{employee_default_path}}",
+					"raw": "{{url}}/{{create_path}}",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
-						"{{employee_default_path}}"
+						"{{create_path}}"
 					]
 				}
 			},
