@@ -71,12 +71,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{url}}/{{employee_default_path}}",
+					"raw": "{{url}}{{employee_create_path}}",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
-						"{{employee_default_path}}"
+						"{{employee_create_path}}"
 					]
 				}
 			},
