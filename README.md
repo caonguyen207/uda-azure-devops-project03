@@ -1,10 +1,9 @@
-# Project Starter
-This repository contains the starter code for the **Ensuring Quality Releases** project of the cd1807 Ensuring Quality Releases (Quality Assurance) course taught by Nathan Anderson. 
 
+## Overview
 
-## How to use?
-- Fork this repository to your Github account and clone it locally for further development. 
-- Follow the classroom instructions, and check the rubric before a submission. 
+## Getting started
+- The Jenkins agent need install unzip
+- Need add the Terraform task to your Azure devops organization
 
-## Suggestions and Corrections
-Feel free to submit PRs to this repo should you have any proposed changes. 
+## Project Submission Requirements
+1. A zip archive of all Terraform tf files and tfvars files. A screenshot of the log output of Terraform when executed by the CI/CD pipeline (ensure the timestamp is visible by toggle timestamps for the specific job)
