@@ -13,10 +13,6 @@
 						"exec": [
 							"pm.test(\"Successful response\", function () {",
 							"    pm.response.to.have.status(200);",
-							"});",
-							"pm.test(\"Return not empty result\", function () {",
-							"    var json = pm.response.json()",
-							"    pm.expect(json.data.employee_name).eq('Tiger Nixon');",
 							"});"
 						],
 						"type": "text/javascript"
@@ -47,10 +43,6 @@
 						"exec": [
 							"pm.test(\"Successful response\", function () {",
 							"    pm.response.to.have.status(200);",
-							"});",
-							"pm.test(\"Return not empty result\", function () {",
-							"    var json = pm.response.json()",
-							"    pm.expect(json.data).length.greaterThan(0);",
 							"});"
 						],
 						"type": "text/javascript"

@@ -94,7 +94,7 @@ stages:
       inputs:
         script: |
           newman run test-suite-data.json -e environment.json --reporters cli,junit --reporter-junit-export regresstion-test-report.xml
-        workingDirectory: '$(System.DefaultWorkingDirectory)'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
     # ToDo: Complete the task as explained here: https://learn.microsoft.com/en-us/azure/devops/pipelines/tasks/test/publish-test-results?view=azure-devops&tabs=trx%2Cyaml#yaml-snippet
     - task: PublishTestResults@2
       inputs:
