@@ -34,7 +34,7 @@ stages:
         terraformVersion: '1.7.1'
     
     # Run Terraform Init on the pipeline agent 
-    - task: TerraformTaskV4@4
+    - task: TerraformCLI@1
       displayName: 'Terrafom init'
       inputs:
         provider: 'azurerm'
@@ -46,7 +46,7 @@ stages:
         backendAzureRmContainerName: 'tfstate'
         backendAzureRmKey: 'test.terraform.tfstate'
 
-    - task: TerraformTaskV4@4
+    - task: TerraformCLI@1
       displayName: Terraform validate
       inputs:
         provider: 'azurerm'
@@ -54,7 +54,7 @@ stages:
         environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
 
     # Run Terraform Apply
-    - task: TerraformTaskV4@4
+    - task: TerraformCLI@1
       displayName: Terraform apply
       inputs:
         provider: 'azurerm'
