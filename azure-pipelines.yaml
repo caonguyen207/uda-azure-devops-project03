@@ -78,13 +78,14 @@ stages:
       displayName: Install Newman
       inputs:
         script: 'sudo npm install -g newman'
-        workingDirectory: $(System.DefaultWorkingDirectory)
+        workingDirectory: '$(System.DefaultWorkingDirectory)'
     # Postman Data Validation Test Suite    
-    - task: CmdLine@1
+    - task: CmdLine@2
       displayName: Run Data Validation Tests
       continueOnError: true
       inputs:
         script: |
+          tree $(System.DefaultWorkingDirectory)
           newman run test-suite-data.json -e environment.json --reporters cli,junit --reporter-junit-export test-report.xml
         workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
     # Postman Regression Test Suite    
