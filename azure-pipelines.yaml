@@ -19,9 +19,6 @@ variables:
   poolName: mypool
 
 stages:
-#--------------------------------------------#  
-# BUILD STAGE
-#--------------------------------------------#    
 - stage: Build
   jobs:
   - job: BuildInfrastructure
