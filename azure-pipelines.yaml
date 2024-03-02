@@ -126,6 +126,7 @@ stages:
         script: |
           sudo apt-get update -y
           pip install -r requirements.txt
+          sudo apt-get install zip -y
           sudo apt-get install -y chromium-browser
           sudo apt-get install -y chromium-chromedriver
     - task: ArchiveFiles@2
