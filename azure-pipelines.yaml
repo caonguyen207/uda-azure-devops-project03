@@ -12,7 +12,7 @@ variables:
   projectRoot: $(System.DefaultWorkingDirectory)
   environmentName: 'test'
   poolName: mypool
-  appName: myapp
+  webAppName: udacity-azure-devops-03
 
 stages:
 - stage: Build
@@ -189,7 +189,6 @@ stages:
       environment:
         name: $(environmentName)
         resourceType: VirtualMachine
-        tags: selenium
       strategy:
         runOnce:
           deploy:
