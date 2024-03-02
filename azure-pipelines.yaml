@@ -12,7 +12,7 @@ variables:
   projectRoot: $(System.DefaultWorkingDirectory)
   environmentName: 'test'
   poolName: mypool
-  webAppName: udacity-azure-devops-03
+  webAppName: myApplication-AppService
 
 stages:
 - stage: Build
@@ -185,6 +185,8 @@ stages:
                 workingDirectory: $(Pipeline.Workspace)/drop-perftests
                 
     - deployment: VMDeploy
+      dependsOn: FakeRestAPI
+      condition: succeeded()
       displayName: Selenium Tests
       environment:
         name: $(environmentName)
@@ -202,7 +204,6 @@ stages:
                 targetType: 'inline'
                 script: |           
                   #! /bin/bash
-                  
                   sudo apt-get update -y
                   sudo apt-get upgrade -y
                   sudo apt-get install python3-pip -y
@@ -213,7 +214,7 @@ stages:
                 unzip -o $(Build.BuildId)-uitests.zip
                 pip install -r requirements.txt
                 chmod +x chromedriver
-                export PATH=$PATH:/home/devopsagent/driver
+                export PATH=$PATH:/home/azureuser/driver
                 echo "Starting Selenium Tests"
                 python3 add_remove_from_cart.py >> selenium.log
                 echo "Completed Selenium Tests. Check selenium.log for results."
