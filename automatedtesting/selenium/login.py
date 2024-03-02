@@ -2,7 +2,6 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 
-
 # Start the browser and login with standard_user
 def login (user, password):
     print ('Starting the browser...')

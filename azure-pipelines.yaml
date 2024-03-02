@@ -29,6 +29,12 @@ stages:
       inputs:
         terraformVersion: '1.7.4'
     
+    - task: CmdLine@2
+      inputs:
+        script: |
+          sudo apt get update
+          sudo apt install unzip
+
     # Run Terraform Init on the pipeline agent 
     - task: TerraformCLI@0
       displayName: 'Terrafom init'
@@ -71,9 +77,14 @@ stages:
         environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
 
   - job: Testing
+    dependsOn: Build
+    condition: succeeded()
     pool:
       name: $(poolName)
     steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '20.11.1'
     - task: CmdLine@2
       displayName: Install Newman
       inputs:
@@ -101,20 +112,27 @@ stages:
         mergeTestResults: true
         testRunTitle: 'Run Test Report'
 
-    #--------------------------------------------#
-    # Selenium (UI) Test Suite - Archive the package  
-    # "ArchiveFiles@2" picks up the web package and archives it.
-    # - task: ArchiveFiles@2
-    #   displayName: 'Archive UI Tests'
-    #   inputs:
-    #     rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/selenium'
-    #     includeRootFolder: false
-    #     archiveType: 'zip'
-    #     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitests.zip'
-    # # Selenium Test Suite - Publish the package  
-    # - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitests.zip   # Same as the archiveFile artifact above. 
-    #   displayName: 'Upload Package'
-    #   artifact: drop-uitests
+    - task: CmdLine@2
+      displayName: Install required packages for selenium test
+      continueOnError: true
+      inputs:
+        workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/selenium'
+        script: |
+          sudo apt-get update -y
+          pip install -r requirements.txt
+          sudo apt-get install -y chromium-browser
+          sudo apt-get install -y chromium-chromedriver
+    - task: ArchiveFiles@2
+      displayName: 'Archive UI Tests'
+      inputs:
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/selenium'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitests.zip'
+    # Selenium Test Suite - Publish the package  
+    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitests.zip   # Same as the archiveFile artifact above. 
+      displayName: 'Upload Package'
+      artifact: drop-uitests
 
     # #--------------------------------------------#    
     # # FakeRestAPI - Archive
