@@ -83,8 +83,14 @@ stages:
       name: $(poolName)
     steps:
     - task: NodeTool@0
+      displayName: Install NodeJS
       inputs:
         versionSpec: '20.11.1'
+    - task: CmdLine@2
+      displayName: Install NPM
+      inputs:
+        script: 'sudo apt install npm -y'
+        workingDirectory: '$(System.DefaultWorkingDirectory)'
     - task: CmdLine@2
       displayName: Install Newman
       inputs:
