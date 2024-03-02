@@ -77,7 +77,7 @@ stages:
         environmentServiceNameAzureRM: '$(azureServiceConnectionId)'
 
   - job: Testing
-    dependsOn: Build
+    dependsOn: BuildInfrastructure
     condition: succeeded()
     pool:
       name: $(poolName)
