@@ -157,66 +157,66 @@ stages:
       displayName: 'Upload Package'
       artifact: drop-perftests
    
- - stage: Deploy
-  jobs:
-  - deployment: FakeRestAPI
-    pool: mypool    
-    environment: $(environmentName)
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - task: AzureWebApp@1
-            displayName: 'Deploy Azure Web App'
-            inputs:
-              azureSubscription: '$(azureServiceConnectionId)'
-              appName: '$(appName)'
-              appType: webApp
-              package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
+  - stage: Deploy
+    jobs:
+      - deployment: FakeRestAPI
+        pool: mypool    
+        environment: $(environmentName)
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+              - task: AzureWebApp@1
+                displayName: 'Deploy Azure Web App'
+                inputs:
+                  azureSubscription: '$(azureServiceConnectionId)'
+                  appName: '$(appName)'
+                  appType: webApp
+                  package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
 
-          - task: CmdLine@2
-            inputs:
-              script: |
-                wget "https://apache.mirrors.lucidnetworks.net//jmeter/binaries/apache-jmeter-5.2.1.tgz"
-                tar -xf apache-jmeter-5.2.1.tgz
-                unzip -o $(Build.BuildId)-perftests.zip
-                ./apache-jmeter-5.2.1/bin/jmeter -n -t perftests.jmx -j jmeter.log -f
-                # cat jmeter.log
-              workingDirectory: $(Pipeline.Workspace)/drop-perftests
-              
-  - deployment: VMDeploy
-    displayName: Selenium Tests
-    environment:
-      name: $(environmentName)
-      resourceType: VirtualMachine
-      tags: selenium
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - download: current
-            artifact: drop-uitests
-            
-          - task: Bash@3
-            displayName: Install required packages for Selenium running
-            inputs:
-              targetType: 'inline'
-              script: |           
-                #! /bin/bash
+              - task: CmdLine@2
+                inputs:
+                  script: |
+                    wget "https://apache.mirrors.lucidnetworks.net//jmeter/binaries/apache-jmeter-5.2.1.tgz"
+                    tar -xf apache-jmeter-5.2.1.tgz
+                    unzip -o $(Build.BuildId)-perftests.zip
+                    ./apache-jmeter-5.2.1/bin/jmeter -n -t perftests.jmx -j jmeter.log -f
+                    # cat jmeter.log
+                  workingDirectory: $(Pipeline.Workspace)/drop-perftests
+                  
+      - deployment: VMDeploy
+        displayName: Selenium Tests
+        environment:
+          name: $(environmentName)
+          resourceType: VirtualMachine
+          tags: selenium
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+              - download: current
+                artifact: drop-uitests
                 
-                sudo apt-get update -y
-                sudo apt-get upgrade -y
-                sudo apt-get install python3-pip -y
-                sudo apt-get install unzip -y
-                sudo apt-get install zip -y
-                sudo apt-get install -y chromium-browser
-          - bash: |
-              unzip -o $(Build.BuildId)-uitests.zip
-              pip install -r requirements.txt
-              chmod +x chromedriver
-              export PATH=$PATH:/home/devopsagent/driver
-              echo "Starting Selenium Tests"
-              python3 add_remove_from_cart.py >> selenium.log
-              echo "Completed Selenium Tests. Check selenium.log for results."
-            displayName: 'Run Selenium Tests' 
-            workingDirectory: $(Pipeline.Workspace)/drop-ui-tests
+              - task: Bash@3
+                displayName: Install required packages for Selenium running
+                inputs:
+                  targetType: 'inline'
+                  script: |           
+                    #! /bin/bash
+                    
+                    sudo apt-get update -y
+                    sudo apt-get upgrade -y
+                    sudo apt-get install python3-pip -y
+                    sudo apt-get install unzip -y
+                    sudo apt-get install zip -y
+                    sudo apt-get install -y chromium-browser
+              - bash: |
+                  unzip -o $(Build.BuildId)-uitests.zip
+                  pip install -r requirements.txt
+                  chmod +x chromedriver
+                  export PATH=$PATH:/home/devopsagent/driver
+                  echo "Starting Selenium Tests"
+                  python3 add_remove_from_cart.py >> selenium.log
+                  echo "Completed Selenium Tests. Check selenium.log for results."
+                displayName: 'Run Selenium Tests' 
+                workingDirectory: $(Pipeline.Workspace)/drop-ui-tests
