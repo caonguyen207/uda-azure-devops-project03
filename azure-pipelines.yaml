@@ -3,7 +3,6 @@ name: Azure Pipelines
 trigger:
 - main
 
-# Otherwise, comment out the line below. 
 pool: mypool
 
 variables:
@@ -13,6 +12,7 @@ variables:
   projectRoot: $(System.DefaultWorkingDirectory)
   environmentName: 'test'
   poolName: mypool
+  appName: myapp
 
 stages:
 - stage: Build
@@ -21,9 +21,6 @@ stages:
     pool:
       name: $(poolName)
     steps:
-    #--------------------------------------------#  
-    # Use Terraform to create the Infrastructure      
-    # Install Terraform on the pipeline agent 
     - task: TerraformInstaller@0
       displayName: 'Terrafom installation'
       inputs:
@@ -35,7 +32,6 @@ stages:
           sudo apt get update
           sudo apt install unzip
 
-    # Run Terraform Init on the pipeline agent 
     - task: TerraformCLI@0
       displayName: 'Terrafom init'
       inputs:
@@ -66,7 +62,6 @@ stages:
         commandOptions: '-out=$(System.DefaultWorkingDirectory)/terraform.tfplan -detailed-exitcode'
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
 
-    # Run Terraform Apply
     - task: TerraformCLI@1
       displayName: Terraform apply
       condition: and(succeeded(), eq(variables['TERRAFORM_PLAN_HAS_CHANGES'], 'true'))
@@ -118,17 +113,17 @@ stages:
         mergeTestResults: true
         testRunTitle: 'Run Test Report'
 
-    - task: CmdLine@2
-      displayName: Install required packages for selenium test
-      continueOnError: true
-      inputs:
-        workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/selenium'
-        script: |
-          sudo apt-get update -y
-          pip install -r requirements.txt
-          sudo apt-get install zip -y
-          sudo apt-get install -y chromium-browser
-          sudo apt-get install -y chromium-chromedriver
+    # - task: CmdLine@2
+    #   displayName: Install required packages for selenium test
+    #   continueOnError: true
+    #   inputs:
+    #     workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/selenium'
+    #     script: |
+    #       sudo apt-get update -y
+    #       pip install -r requirements.txt
+    #       sudo apt-get install zip -y
+    #       sudo apt-get install -y chromium-browser
+    #       sudo apt-get install -y chromium-chromedriver
     - task: ArchiveFiles@2
       displayName: 'Archive UI Tests'
       inputs:
@@ -136,116 +131,92 @@ stages:
         includeRootFolder: false
         archiveType: 'zip'
         archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitests.zip'
-    # Selenium Test Suite - Publish the package  
-    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitests.zip   # Same as the archiveFile artifact above. 
+    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitests.zip
       displayName: 'Upload Package'
       artifact: drop-uitests
 
-    # #--------------------------------------------#    
-    # # FakeRestAPI - Archive
-    # # ToDo: Complete the ArchiveFiles@2 task and publish step 
-    # - task: ArchiveFiles@2
-    #   displayName: 'Archive FakeRestAPI'
-    #   inputs:
-    #     rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/fakerestapi'
-    #     includeRootFolder: false
-    #     archiveType: 'zip'
-    #     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
-    # - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip
-    #   displayName: 'Upload Package'
-    #   artifact: drop-fakerestapi
+    - task: ArchiveFiles@2
+      displayName: 'Archive FakeRestAPI'
+      inputs:
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/fakerestapi'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
+    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip
+      displayName: 'Upload Package'
+      artifact: drop-fakerestapi
 
-    # #--------------------------------------------#  
-    # # JMeter (Performance) Test Suite - Archive
-    # # ToDo: Complete the ArchiveFiles@2 task and publish step 
-    # - task: ArchiveFiles@2
-    #   displayName: 'Archive PerformanceTestSuite'
-    #   inputs:
-    #     rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/testsuite'
-    #     includeRootFolder: false
-    #     archiveType: 'zip'
-    #     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-perftests.zip'
-    # # JMeter Test Suite - Publish    
-    # - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-perftests.zip
-    #   displayName: 'Upload Package'
-    #   artifact: drop-perftests
+    - task: ArchiveFiles@2
+      displayName: 'Archive PerformanceTestSuite'
+      inputs:
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/testsuite'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-perftests.zip'
+    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-perftests.zip
+      displayName: 'Upload Package'
+      artifact: drop-perftests
+   
+ - stage: Deploy
+  jobs:
+  - deployment: FakeRestAPI
+    pool: mypool    
+    environment: $(environmentName)
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureWebApp@1
+            displayName: 'Deploy Azure Web App'
+            inputs:
+              azureSubscription: '$(azureServiceConnectionId)'
+              appName: '$(appName)'
+              appType: webApp
+              package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
 
-# #--------------------------------------------#  
-# # DEPLOYMENT STAGE
-# #--------------------------------------------#    
-#  - stage: Deploy
-#   jobs:
-#   #--------------------------------------------#  
-#   # Deploy FakeRestAPI Web App
-#   - deployment: FakeRestAPI
-#     pool: mypool    
-#     environment: $(environmentName)   # ToDo
-#     strategy:
-#       runOnce:
-#         deploy:
-#           steps:
-#           - task: AzureWebApp@1
-#             displayName: 'Deploy Azure Web App'
-#             inputs:
-#               azureSubscription: ''     # ToDo
-#               appName: ''               # ToDo
-#               appType: webApp
-#               package: $(Pipeline.Workspace)/<artifact>/<archiveFile>       # ToDo: Use the published zip artifact. 
-#           #--------------------------------------------#    
-#           # Run JMeter test suite against the App Service
-#           - task: CmdLine@2
-#             inputs:
-#               script: |
-#                 wget "https://apache.mirrors.lucidnetworks.net//jmeter/binaries/apache-jmeter-5.2.1.tgz"
-#                 tar -xf apache-jmeter-5.2.1.tgz
-#                 unzip -o $(Build.BuildId)-perftests.zip
-#                 ./apache-jmeter-5.2.1/bin/jmeter -n -t PerformanceTestSuite.jmx -j jmeter.log -f
-#                 cat jmeter.log                                                                           # ToDo: Write your commands
-#               workingDirectory: $(Pipeline.Workspace)/<artifact>            # ToDo: Use the artifact name from the task above
+          - task: CmdLine@2
+            inputs:
+              script: |
+                wget "https://apache.mirrors.lucidnetworks.net//jmeter/binaries/apache-jmeter-5.2.1.tgz"
+                tar -xf apache-jmeter-5.2.1.tgz
+                unzip -o $(Build.BuildId)-perftests.zip
+                ./apache-jmeter-5.2.1/bin/jmeter -n -t perftests.jmx -j jmeter.log -f
+                # cat jmeter.log
+              workingDirectory: $(Pipeline.Workspace)/drop-perftests
               
-#   #--------------------------------------------#  
-#   # Selenium | Functional UI Tests
-#   # ToDo: 
-#   - deployment: VMDeploy
-#     displayName: Selenium Tests
-#     environment:
-#       name: $(environmentName)
-#       resourceType: VirtualMachine
-#       tags: selenium
-#     strategy:
-#       runOnce:
-#         deploy:
-#           steps:
-#           - download: current
-#             artifact: drop-ui-tests     # ToDo: Change/provide a name
+  - deployment: VMDeploy
+    displayName: Selenium Tests
+    environment:
+      name: $(environmentName)
+      resourceType: VirtualMachine
+      tags: selenium
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: drop-uitests
             
-#           - task: Bash@3
-#             inputs:
-#               targetType: 'inline'
-#               script: |           
-#                 #! /bin/bash
+          - task: Bash@3
+            displayName: Install required packages for Selenium running
+            inputs:
+              targetType: 'inline'
+              script: |           
+                #! /bin/bash
                 
-#                 sudo apt-get upgrade -y
-#                 sudo apt-get install python3-pip -y
-#                 sudo apt-get install unzip -y
-#                 sudo apt-get install -y chromium-browser
-#                 pip3 install selenium
-#                 cd ~/
-#                 DIR=/home/testuser/app
-#                 if [ ! -d "$DIR" ]; then
-#                     mkdir app
-#                 fi
-#                 mv /home/testuser/azagent/_work/1/drop-uitests/$(Build.BuildId)-uitests.zip app
-#                 cd app
-#                 unzip -o $(Build.BuildId)-uitests.zip
-#                 FILE=/home/testuser/app/chromedriver_linux64.zip
-#                 if [ ! -f "$FILE" ]; then
-#                     LATEST=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELEASE)
-#                     wget http://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip
-#                     unzip -o chromedriver_linux64.zip
-#                     sudo ln -s $PWD/chromedriver /usr/local/bin/chromedriver
-#                 fi
-#                 export PATH=$PATH:/home/testuser/app
-#                 echo "Starting Selenium Tests"
-#                 python3 add_remove_from_cart.py >> selenium.log
-#                 echo "Completed Selenium Tests. Check selenium.log for results."
+                sudo apt-get update -y
+                sudo apt-get upgrade -y
+                sudo apt-get install python3-pip -y
+                sudo apt-get install unzip -y
+                sudo apt-get install zip -y
+                sudo apt-get install -y chromium-browser
+          - bash: |
+              unzip -o $(Build.BuildId)-uitests.zip
+              pip install -r requirements.txt
+              chmod +x chromedriver
+              export PATH=$PATH:/home/devopsagent/driver
+              echo "Starting Selenium Tests"
+              python3 add_remove_from_cart.py >> selenium.log
+              echo "Completed Selenium Tests. Check selenium.log for results."
+            displayName: 'Run Selenium Tests' 
+            workingDirectory: $(Pipeline.Workspace)/drop-ui-tests
