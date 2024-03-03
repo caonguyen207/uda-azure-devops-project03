@@ -20,31 +20,31 @@ def login(user, password):
   if driver.current_url == 'https://www.saucedemo.com/inventory.html':
     print('Successfully logged in with ${user}')
     logo = driver.find_element_by_class_name("app_logo").text
-		return "${logo}" == "Swag Labs"
-	else:
+    return "${logo}" == "Swag Labs"
+  else:
     print ('Failed to logged in')
-		return False
+    return False
 
 def add_item ():
   driver.get("https://www.saucedemo.com/inventory.html")
-	driver.find_element_by_id('add-to-cart-sauce-labs-backpack').click()
-	no_of_items = driver.find_element_by_class_name("shopping_cart_badge").text
-	return no_of_items == '1'
+  driver.find_element_by_id('add-to-cart-sauce-labs-backpack').click()
+  no_of_items = driver.find_element_by_class_name("shopping_cart_badge").text
+  return no_of_items == '1'
 
 def add_all_items():
-	driver.get("https://www.saucedemo.com/inventory.html")
-    items = driver.find_element_by_class_name('inventory_item')
-	for item in items:
-		item.find_element_by_class_name("btn_inventory").click()
-	no_of_items = driver.find_element_by_class_name("shopping_cart_badge").text
-    assert no_of_items == '6'
+  driver.get("https://www.saucedemo.com/inventory.html")
+  items = driver.find_element_by_class_name('inventory_item')
+  for item in items:
+    item.find_element_by_class_name("btn_inventory").click()
+  no_of_items = driver.find_element_by_class_name("shopping_cart_badge").text
+  assert no_of_items == '6'
 
 def remove_all_items():
-	driver.get("https://www.saucedemo.com/cart.html")
-	items = driver.find_element_by_class_name("cart_item")
-	for item in items:
-		item.find_element_by_class_name("cart_button").click()
-	assert !driver.find_element_by_class_name("shopping_cart_badge")
+  driver.get("https://www.saucedemo.com/cart.html")
+  items = driver.find_element_by_class_name("cart_item")
+  for item in items:
+    item.find_element_by_class_name("cart_button").click()
+  assert not len(driver.find_element_by_class_name("shopping_cart_badge"))
 
 login('standard_user', 'secret_sauce')
 
