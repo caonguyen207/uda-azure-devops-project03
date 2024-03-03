@@ -112,7 +112,10 @@ stages:
               searchFolder: "$(System.DefaultWorkingDirectory)/automatedtesting/postman"
               mergeTestResults: true
               testRunTitle: "Run Test Report"
-
+          - task: CmdLine@2
+            displayName: Install required packages
+            inputs:
+              script: "sudo apt install -y zip"
           - task: ArchiveFiles@2
             displayName: "Archive UI Tests"
             inputs:
