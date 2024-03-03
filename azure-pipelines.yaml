@@ -29,8 +29,8 @@ stages:
           - task: CmdLine@2
             inputs:
               script: |
-                sudo apt get update
-                sudo apt-get install unzip -y
+                sudo apt get update -y
+                sudo apt install unzip -y
 
           - task: TerraformCLI@0
             displayName: "Terrafom init"
