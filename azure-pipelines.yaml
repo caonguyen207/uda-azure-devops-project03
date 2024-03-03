@@ -17,59 +17,59 @@ variables:
 stages:
   - stage: Build
     jobs:
-      # - job: BuildInfrastructure
-      #   pool:
-      #     name: $(poolName)
-      #   steps:
-      #     - task: TerraformInstaller@0
-      #       displayName: "Terrafom installation"
-      #       inputs:
-      #         terraformVersion: "1.7.4"
+      - job: BuildInfrastructure
+        pool:
+          name: $(poolName)
+        steps:
+          - task: TerraformInstaller@0
+            displayName: "Terrafom installation"
+            inputs:
+              terraformVersion: "1.7.4"
 
-      #     - task: CmdLine@2
-      #       inputs:
-      #         script: |
-      #           sudo apt get update -y
-      #           sudo apt install unzip -y
+          - task: CmdLine@2
+            inputs:
+              script: |
+                sudo apt get update -y
+                sudo apt install unzip -y
 
-      #     - task: TerraformCLI@0
-      #       displayName: "Terrafom init"
-      #       inputs:
-      #         provider: "azurerm"
-      #         command: "init"
-      #         workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test"
-      #         backendServiceArm: "$(azureServiceConnectionId)"
-      #         backendAzureRmResourceGroupName: "Azuredevops"
-      #         backendAzureRmStorageAccountName: "tfstate242649634"
-      #         backendAzureRmContainerName: "tfstate"
-      #         backendAzureRmKey: "test.terraform.tfstate"
+          - task: TerraformCLI@0
+            displayName: "Terrafom init"
+            inputs:
+              provider: "azurerm"
+              command: "init"
+              workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test"
+              backendServiceArm: "$(azureServiceConnectionId)"
+              backendAzureRmResourceGroupName: "Azuredevops"
+              backendAzureRmStorageAccountName: "tfstate242649634"
+              backendAzureRmContainerName: "tfstate"
+              backendAzureRmKey: "test.terraform.tfstate"
 
-      #     - task: TerraformCLI@1
-      #       displayName: Terraform validate
-      #       inputs:
-      #         provider: "azurerm"
-      #         command: "validate"
-      #         environmentServiceNameAzureRM: "$(azureServiceConnectionId)"
-      #         workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test"
+          - task: TerraformCLI@1
+            displayName: Terraform validate
+            inputs:
+              provider: "azurerm"
+              command: "validate"
+              environmentServiceNameAzureRM: "$(azureServiceConnectionId)"
+              workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test"
 
-      #     - task: TerraformCLI@0
-      #       displayName: Terraform plan
-      #       inputs:
-      #         provider: "azurerm"
-      #         command: "plan"
-      #         environmentServiceNameAzureRM: "$(azureServiceConnectionId)"
-      #         publishPlanResults: "my-plan"
-      #         commandOptions: "-out=$(System.DefaultWorkingDirectory)/terraform.tfplan -detailed-exitcode"
-      #         workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test"
+          - task: TerraformCLI@0
+            displayName: Terraform plan
+            inputs:
+              provider: "azurerm"
+              command: "plan"
+              environmentServiceNameAzureRM: "$(azureServiceConnectionId)"
+              publishPlanResults: "my-plan"
+              commandOptions: "-out=$(System.DefaultWorkingDirectory)/terraform.tfplan -detailed-exitcode"
+              workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test"
 
-      #     - task: TerraformCLI@1
-      #       displayName: Terraform apply
-      #       condition: and(succeeded(), eq(variables['TERRAFORM_PLAN_HAS_CHANGES'], 'true'))
-      #       inputs:
-      #         provider: "azurerm"
-      #         command: "apply"
-      #         workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test"
-      #         environmentServiceNameAzureRM: "$(azureServiceConnectionId)"
+          - task: TerraformCLI@1
+            displayName: Terraform apply
+            condition: and(succeeded(), eq(variables['TERRAFORM_PLAN_HAS_CHANGES'], 'true'))
+            inputs:
+              provider: "azurerm"
+              command: "apply"
+              workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test"
+              environmentServiceNameAzureRM: "$(azureServiceConnectionId)"
 
       - job: Testing
         dependsOn: BuildInfrastructure
