@@ -5,7 +5,7 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.common.by import By
 
 options = webdriver.ChromeOptions()
-options.headless = True 
+options.headless = True
 
 def login(user, password):
   driver.get('https://www.saucedemo.com/')
@@ -53,17 +53,16 @@ def remove_all_items():
   print ('Remove all items completed!')
 
 print('Starting the browser...')
-with webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options) as driver:
-# driver = webdriver.Chrome(ChromeDriverManager().install(), )
-    print('Browser started successfully. Navigating to the demo page to login.')
-    try:
-        login('standard_user', 'secret_sauce')
+driver = webdriver.Chrome(options=options)
+print('Browser started successfully. Navigating to the demo page to login.')
+try:
+    login('standard_user', 'secret_sauce')
 
-        add_item()
-        remove_item()
-        add_all_items()
-        remove_all_items()
-        print('Completed all test case')
-    except:
-        # Close the driver
-        driver.close()
+    add_item()
+    remove_item()
+    add_all_items()
+    remove_all_items()
+    print('Completed all test case')
+except:
+    # Close the driver
+    driver.close()

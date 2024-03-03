@@ -199,8 +199,9 @@ stages:
                       sudo apt-get update -y
                       sudo apt-get install python3-pip -y
                       sudo apt-get install unzip -y
-                      sudo apt-get install -y chromium-browser
-                      sudo apt-get install -y chromium-chromedriver
+                      sudo mv chromedriver /usr/bin/chromedriver
+                      sudo chown root:root /usr/bin/chromedriver
+                      sudo chmod +x /usr/bin/chromedriver
                 - bash: |
                     unzip -o $(Build.BuildId)-uitests.zip
                     pip3 install -r requirements.txt
