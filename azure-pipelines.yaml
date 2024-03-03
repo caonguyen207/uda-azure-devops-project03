@@ -171,8 +171,8 @@ stages:
                       wget "https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.4.1.tgz"
                       tar -xvzf apache-jmeter-5.4.1.tgz
                       unzip -o $(Build.BuildId)-perftests.zip
-                      ./apache-jmeter-5.4.1/bin/jmeter -n -t perftests.jmx -j jmeter.log -f
-                      # cat jmeter.log
+                      ./apache-jmeter-5.4.1/bin/jmeter -n -t StressTestSuite.jmx --logfile stress-test.log
+                      ./apache-jmeter-5.4.1/bin/jmeter -n -t EnduranceTestSuite.jmx --logfile endurance-test.log
                     workingDirectory: $(Pipeline.Workspace)/drop-perftests
 
       - deployment: VMDeploy

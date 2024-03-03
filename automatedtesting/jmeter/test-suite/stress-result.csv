@@ -1,0 +1,21 @@
+timeStamp,elapsed,label,responseCode,responseMessage,threadName,dataType,success,failureMessage,bytes,sentBytes,grpThreads,allThreads,URL,Latency,IdleTime,Connect
+1709455732159,754,HTTP Request,200,OK,StressTestSuite 1-1,text,true,,784,156,2,2,https://myapplication-appservice.azurewebsites.net/api/Users,754,0,517
+1709455732913,219,HTTP Request,200,OK,StressTestSuite 1-1,text,true,,784,156,2,2,https://myapplication-appservice.azurewebsites.net/api/Users,219,0,0
+1709455732670,669,HTTP Request,200,OK,StressTestSuite 1-2,text,true,,784,156,2,2,https://myapplication-appservice.azurewebsites.net/api/Users,669,0,443
+1709455733133,218,HTTP Request,200,OK,StressTestSuite 1-1,text,true,,784,156,2,2,https://myapplication-appservice.azurewebsites.net/api/Users,218,0,0
+1709455733340,221,HTTP Request,200,OK,StressTestSuite 1-2,text,true,,784,156,2,2,https://myapplication-appservice.azurewebsites.net/api/Users,221,0,0
+1709455733352,220,HTTP Request,200,OK,StressTestSuite 1-1,text,true,,784,156,2,2,https://myapplication-appservice.azurewebsites.net/api/Users,220,0,0
+1709455733562,219,HTTP Request,200,OK,StressTestSuite 1-2,text,true,,784,156,2,2,https://myapplication-appservice.azurewebsites.net/api/Users,219,0,0
+1709455733573,218,HTTP Request,200,OK,StressTestSuite 1-1,text,true,,784,156,2,2,https://myapplication-appservice.azurewebsites.net/api/Users,218,0,0
+1709455733781,220,HTTP Request,200,OK,StressTestSuite 1-2,text,true,,784,156,2,2,https://myapplication-appservice.azurewebsites.net/api/Users,220,0,0
+1709455733792,219,HTTP Request,200,OK,StressTestSuite 1-1,text,true,,784,156,2,2,https://myapplication-appservice.azurewebsites.net/api/Users,219,0,0
+1709455734001,220,HTTP Request,200,OK,StressTestSuite 1-2,text,true,,784,156,2,2,https://myapplication-appservice.azurewebsites.net/api/Users,220,0,0
+1709455734011,220,HTTP Request,200,OK,StressTestSuite 1-1,text,true,,784,156,2,2,https://myapplication-appservice.azurewebsites.net/api/Users,220,0,0
+1709455734222,219,HTTP Request,200,OK,StressTestSuite 1-2,text,true,,784,156,2,2,https://myapplication-appservice.azurewebsites.net/api/Users,219,0,0
+1709455734232,219,HTTP Request,200,OK,StressTestSuite 1-1,text,true,,784,156,2,2,https://myapplication-appservice.azurewebsites.net/api/Users,219,0,0
+1709455734442,223,HTTP Request,200,OK,StressTestSuite 1-2,text,true,,784,156,2,2,https://myapplication-appservice.azurewebsites.net/api/Users,223,0,0
+1709455734452,219,HTTP Request,200,OK,StressTestSuite 1-1,text,true,,784,156,2,2,https://myapplication-appservice.azurewebsites.net/api/Users,219,0,0
+1709455734666,219,HTTP Request,200,OK,StressTestSuite 1-2,text,true,,784,156,2,2,https://myapplication-appservice.azurewebsites.net/api/Users,219,0,0
+1709455734672,219,HTTP Request,200,OK,StressTestSuite 1-1,text,true,,784,156,2,2,https://myapplication-appservice.azurewebsites.net/api/Users,219,0,0
+1709455734886,225,HTTP Request,200,OK,StressTestSuite 1-2,text,true,,784,156,1,1,https://myapplication-appservice.azurewebsites.net/api/Users,225,0,0
+1709455735112,222,HTTP Request,200,OK,StressTestSuite 1-2,text,true,,784,156,1,1,https://myapplication-appservice.azurewebsites.net/api/Users,222,0,0
