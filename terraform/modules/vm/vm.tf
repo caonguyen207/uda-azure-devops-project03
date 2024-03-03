@@ -18,7 +18,7 @@ resource "azurerm_network_interface" "test" {
 }
 
 resource "azurerm_linux_virtual_machine" "test" {
-  name                  = "linux-vm-2"
+  name                  = "linux-vm"
   location              = var.location
   resource_group_name   = var.resource_group
   size                  = "Standard_B1s"
