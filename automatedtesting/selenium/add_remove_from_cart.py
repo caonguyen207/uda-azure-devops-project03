@@ -2,30 +2,32 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 
-print ('Starting the browser...')
+print('Starting the browser...')
 # --uncomment when running in Azure DevOps.
 options = ChromeOptions()
-options.add_argument("--headless") 
+options.add_argument("--headless")
 driver = webdriver.Chrome(options=options)
 driver = webdriver.Chrome()
-print ('Browser started successfully. Navigating to the demo page to login.')
+print('Browser started successfully. Navigating to the demo page to login.')
 
-def login (user, password):
-    driver.get('https://www.saucedemo.com/')
-    driver.find_element_by_css_selector("input[id='user-name']").send_keys(user)
-    driver.find_element_by_css_selector("input[id='password']").send_keys(password)
-    driver.find_element_by_css_selector("input[id='login-button']").click()
-    if driver.current_url == 'https://www.saucedemo.com/inventory.html':
-        print ('Successfully logged in')
-        driver.findElements(By.class("app_logo")).getText() = 'Swag Labs'
-		return True
+
+def login(user, password):
+  driver.get('https://www.saucedemo.com/')
+  driver.find_element_by_css_selector("input[id='user-name']").send_keys(user)
+  driver.find_element_by_css_selector(
+      "input[id='password']").send_keys(password)
+  driver.find_element_by_css_selector("input[id='login-button']").click()
+  if driver.current_url == 'https://www.saucedemo.com/inventory.html':
+    print('Successfully logged in with ${user}')
+    logo = driver.find_element_by_class_name("app_logo").text
+		return "${logo}" == "Swag Labs"
 	else:
-        print ('Failed to logged in')
+    print ('Failed to logged in')
 		return False
 
 def add_item ():
-    driver.get("https://www.saucedemo.com/inventory.html")
-	driver.find_element(By.ID,'add-to-cart-sauce-labs-backpack').click()
+  driver.get("https://www.saucedemo.com/inventory.html")
+	driver.find_element_by_id('add-to-cart-sauce-labs-backpack').click()
 	no_of_items = driver.find_element_by_class_name("shopping_cart_badge").text
 	return no_of_items == '1'
 
