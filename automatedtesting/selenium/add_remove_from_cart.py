@@ -1,24 +1,21 @@
 # #!/usr/bin/env python
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options as ChromeOptions
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.common.by import By
 
 print('Starting the browser...')
-# --uncomment when running in Azure DevOps.
-options = ChromeOptions()
-options.add_argument("--headless")
-driver = webdriver.Chrome(options=options)
+driver = webdriver.Chrome(ChromeDriverManager().install())
 print('Browser started successfully. Navigating to the demo page to login.')
 
 
 def login(user, password):
   driver.get('https://www.saucedemo.com/')
-  driver.find_element_by_css_selector("input[id='user-name']").send_keys(user)
-  driver.find_element_by_css_selector(
-      "input[id='password']").send_keys(password)
-  driver.find_element_by_css_selector("input[id='login-button']").click()
+  driver.find_element(By.CSS_SELECTOR, "input[id='user-name']").send_keys(user)
+  driver.find_element(By.CSS_SELECTOR, "input[id='password']").send_keys(password)
+  driver.find_element(By.CSS_SELECTOR, "input[id='login-button']").click()
   if driver.current_url == 'https://www.saucedemo.com/inventory.html':
-    print('Successfully logged in with ${user}')
-    logo = driver.find_element_by_class_name("app_logo").text
+    print('Successfully logged in with user: ' + user)
+    logo = driver.find_element(By.CSS_SELECTOR, ".header_label>.app_logo").text
     return "${logo}" == "Swag Labs"
   else:
     print ('Failed to logged in')
@@ -26,27 +23,39 @@ def login(user, password):
 
 def add_item ():
   driver.get("https://www.saucedemo.com/inventory.html")
-  driver.find_element_by_id('add-to-cart-sauce-labs-backpack').click()
-  no_of_items = driver.find_element_by_class_name("shopping_cart_badge").text
+  driver.find_element(By.ID,'add-to-cart-sauce-labs-backpack').click()
+  no_of_items = driver.find_element(By.CSS_SELECTOR, "span.shopping_cart_badge").text
   return no_of_items == '1'
+
+def remove_item ():
+  driver.get("https://www.saucedemo.com/inventory.html")
+  driver.find_element(By.ID,'remove-sauce-labs-backpack').click()
+  items = driver.find_elements(By.CLASS_NAME, "cart_item")
+  return len(items) == 0
 
 def add_all_items():
   driver.get("https://www.saucedemo.com/inventory.html")
-  items = driver.find_element_by_class_name('inventory_item')
+  items = driver.find_elements(By.CLASS_NAME, 'inventory_item')
   for item in items:
-    item.find_element_by_class_name("btn_inventory").click()
-  no_of_items = driver.find_element_by_class_name("shopping_cart_badge").text
+    item.find_element(By.CSS_SELECTOR, "button.btn_inventory").click()
+  no_of_items = driver.find_element(By.CSS_SELECTOR, "span.shopping_cart_badge").text
   assert no_of_items == '6'
 
 def remove_all_items():
   driver.get("https://www.saucedemo.com/cart.html")
-  items = driver.find_element_by_class_name("cart_item")
+  items = driver.find_elements(By.CLASS_NAME, "cart_item")
   for item in items:
-    item.find_element_by_class_name("cart_button").click()
-  assert not len(driver.find_element_by_class_name("shopping_cart_badge"))
+    item.find_element(By.CLASS_NAME, "cart_button").click()
+  items = driver.find_elements(By.CLASS_NAME, "cart_item")
+  return len(items) == 0
 
-login('standard_user', 'secret_sauce')
+try:
+  login('standard_user', 'secret_sauce')
 
-add_item()
-add_all_items()
-remove_all_items()
+  add_item()
+  remove_item()
+  add_all_items()
+  remove_all_items()
+except:
+  # Close the driver
+  driver.close()
