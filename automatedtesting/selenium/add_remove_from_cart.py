@@ -57,7 +57,7 @@ print('Starting the browser...')
 # https://stackoverflow.com/questions/60296873/sessionnotcreatedexception-message-session-not-created-this-version-of-chrome
 # https://sites.google.com/chromium.org/driver/downloads/version-selection
 # driver = webdriver.Chrome(executable_path='./chromedriver.exe', options=options)
-driver = webdriver.Chrome(executable_path='./chromedriver', options=options)
+driver = webdriver.Chrome(executable_path='/usr/bin/chromedriver', options=options)
 print('Browser started successfully. Navigating to the demo page to login.')
 try:
     login('standard_user', 'secret_sauce')
