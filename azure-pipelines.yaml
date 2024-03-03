@@ -199,7 +199,6 @@ stages:
                       sudo apt-get update -y
                       sudo apt-get install python3-pip -y
                       sudo apt-get install unzip -y
-                      sudo apt-get install zip -y
                       sudo apt-get install -y chromium-browser
                 - bash: |
                     unzip -o $(Build.BuildId)-uitests.zip
