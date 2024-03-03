@@ -1,10 +1,12 @@
 # #!/usr/bin/env python
 from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 
 print('Starting the browser...')
-driver = webdriver.Chrome(ChromeDriverManager().install())
+options = Options()	
+options.add_argument("--headless") 
+driver = webdriver.Chrome(options=options)
 print('Browser started successfully. Navigating to the demo page to login.')
 
 

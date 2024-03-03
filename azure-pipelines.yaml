@@ -204,7 +204,6 @@ stages:
                 - bash: |
                     unzip -o $(Build.BuildId)-uitests.zip
                     pip3 install -r requirements.txt
-                    pip3 install webdriver-manager
                     python3 add_remove_from_cart.py | tee -a selenium.log
                   displayName: "Run Selenium Tests"
                   workingDirectory: $(Pipeline.Workspace)/drop-uitests
