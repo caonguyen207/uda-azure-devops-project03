@@ -7,7 +7,6 @@ print('Starting the browser...')
 options = ChromeOptions()
 options.add_argument("--headless")
 driver = webdriver.Chrome(options=options)
-driver = webdriver.Chrome()
 print('Browser started successfully. Navigating to the demo page to login.')
 
 
