@@ -165,11 +165,6 @@ stages:
                     appName: "$(webAppName)"
                     appType: webApp
                     package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
-                - task: JavaToolInstaller@0
-                  inputs:
-                    versionSpec: '8'
-                    jdkSourceOption: 'AzureStorage'
-                    jdkArchitectureOption: 'x64'
                 - task: CmdLine@2
                   inputs:
                     script: |
