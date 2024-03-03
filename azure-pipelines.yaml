@@ -199,14 +199,14 @@ stages:
                       sudo apt-get update -y
                       sudo apt-get install python3-pip -y
                       sudo apt-get install unzip -y
-                      sudo mv chromedriver /usr/bin/chromedriver
-                      sudo chown root:root /usr/bin/chromedriver
-                      sudo chmod +x /usr/bin/chromedriver
                 - bash: |
                     unzip -o $(Build.BuildId)-uitests.zip
                     pip3 install -r requirements.txt
                     google-chrome --version
                     chromedriver --version
+                    sudo mv chromedriver /usr/bin/chromedriver
+                    sudo chown root:root /usr/bin/chromedriver
+                    sudo chmod +x /usr/bin/chromedriver
                     python3 add_remove_from_cart.py | tee -a selenium.log
                   displayName: "Run Selenium Tests"
                   workingDirectory: $(Pipeline.Workspace)/drop-uitests
