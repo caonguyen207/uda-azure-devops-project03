@@ -188,8 +188,8 @@ stages:
                   artifact: drop-uitests
                 - task: NodeTool@0
                   displayName: Install NodeJS 16
-                    inputs:
-                      versionSpec: "16.x"
+                  inputs:
+                    versionSpec: "16.x"
                 - task: Bash@3
                   displayName: Install required packages for Selenium running
                   inputs:
