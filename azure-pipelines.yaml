@@ -1,4 +1,4 @@
-name: Azure Pipelines For Project 03
+name: Azure Pipelines
 
 trigger:
   - main
