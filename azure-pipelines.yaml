@@ -208,7 +208,7 @@ stages:
                     sudo mv chromedriver /usr/bin/chromedriver
                     sudo chown root:root /usr/bin/chromedriver
                     sudo chmod +x /usr/bin/chromedriver
-                    touch /var/logs/selenium.log
+                    sudo touch /var/logs/selenium.log
                     python3 add_remove_from_cart.py | tee -a /var/logs/selenium.log
                   displayName: "Run Selenium Tests"
                   workingDirectory: $(Pipeline.Workspace)/drop-uitests
