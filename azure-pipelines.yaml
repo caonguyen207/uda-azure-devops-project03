@@ -199,6 +199,7 @@ stages:
                       sudo apt-get update -y
                       sudo apt-get install python3-pip -y
                       sudo apt-get install unzip -y
+                      pip3 install webdriver_manager
                 - bash: |
                     unzip -o $(Build.BuildId)-uitests.zip
                     pip3 install -r requirements.txt
