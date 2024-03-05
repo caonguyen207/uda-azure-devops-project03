@@ -30,7 +30,7 @@ stages:
             inputs:
               script: |
                 sudo apt get update -y
-                sudo apt install unzip -y
+                sudo apt-get install zip unzip -f
 
           - task: TerraformCLI@0
             displayName: "Terrafom init"
