@@ -26,12 +26,6 @@ stages:
             inputs:
               terraformVersion: "1.7.4"
 
-          - task: CmdLine@2
-            inputs:
-              script: |
-                sudo apt get update -y
-                sudo apt-get install zip unzip -f
-
           - task: TerraformCLI@0
             displayName: "Terrafom init"
             inputs:
