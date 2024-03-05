@@ -1,4 +1,4 @@
-name: Azure Pipelines for Azure DevOps course
+name: Azure Pipelines
 
 trigger:
   - main
