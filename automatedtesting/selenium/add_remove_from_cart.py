@@ -6,9 +6,9 @@ from selenium.webdriver.common.by import By
 import logging
 
 logging.basicConfig(
-    format='%(asctime)s %(levelname)-8s %(message)s',
+    format='%(asctime)s %(message)s',
     level=logging.INFO,
-    datefmt='%Y-%m-%d %H:%M:%S')
+    datefmt='%b %d %H:%M:%S')
 
 options = webdriver.ChromeOptions()
 options.headless = True
